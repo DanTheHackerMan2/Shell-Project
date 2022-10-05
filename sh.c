@@ -42,64 +42,61 @@ if ( (pwd = getcwd(NULL, PATH_MAX+1)) == NULL )
   /* Put PATH into a linked list */
   pathlist = get_path();
 
-  while ( go )
-  {
-    /* print your prompt */
-printf("enter a command\n");
-    /* get command line and process */
-scanf("%s", input);
-    /* check for each built in command and implement */
-if(strcmp(input, "exit") == 0){
-                //exits
-	printf("exiting\n");
-	return 0;
+while ( go ){
+	/* print your prompt */
+	printf("enter a command\n");
+	/* get command line and process */
+	scanf("%s", input);
+        /* check for each built in command and implement */
+	if(strcmp(input, "exit") == 0){
+		//exits
+		printf("exiting\n");
+		return 0;
         }
-if(strcmp(input, "which") == 0){
-	//path = get_path();
-	printf("enter command to search\n");
-	scanf("%s", commandinput);
+	if(strcmp(input, "which") == 0){
+		//path = get_path();
+		printf("enter command to search\n");
+		scanf("%s", commandinput);
+		which(commandinput, get_path());
+	}
+        /*  else  program to exec */
+        {
+        /* find it */
+        /* do fork(), execve() and waitpid() */
 
-	which(commandinput, get_path());
-}
-     /*  else  program to exec */
-    {
-       /* find it */
-       /* do fork(), execve() and waitpid() */
-
-      /* else */
+        /* else */
         /* fprintf(stderr, "%s: Command not found.\n", args[0]); */
-    }
-  }
+        }
+}
   return 0;
 } /* sh() */
 
-char *which(char *command, struct pathelement *pathlist )
-{
-int found;
+char *which(char *command, struct pathelement *pathlist ){
+	int found = 0;
 	printf("which function is running\n");
-   /* loop through pathlist until finding command and return it.  Return
-   NULL when not found. */
-if(pathlist->element == NULL){
-printf("test1\n");
-printf("empty pathlist\n");
-return 0;
-}
-while(pathlist->next != NULL){
-	printf("test2");
-	if(pathlist->element == command){
-	found = 1;
-	return command;
+        /* loop through pathlist until finding command and return it.  Return
+        NULL when not found. */
+	if(pathlist->element == NULL){
+		printf("empty pathlist\n");
+		return 0;
 	}
-	else{
-	pathlist = pathlist->next;
-}
-}
-if(found == 0){
-printf("test3");
-printf("command not found\n");
-return NULL;
-}
-printf("test4");
+	while(pathlist->next != NULL){
+		printf("searching\n");
+		printf("%s\n", pathlist->element);
+		if(strcmp(pathlist->element, command) == 0){
+			found = 1;
+		printf("found\n");
+		return command;
+		}
+		else{
+			pathlist = pathlist->next;
+		}
+	}
+	if(found == 0){
+		printf("command not found\n");
+		return NULL;
+	}
+	printf("done which\n");
 } /* which() */
 
 char *where(char *command, struct pathelement *pathlist )

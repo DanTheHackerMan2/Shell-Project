@@ -17,3 +17,11 @@ main()
 
   p = get_path();
   while (p) {         // WHICH
+    sprintf(cmd, "%s/gcc", p->element);
+    if (access(cmd, X_OK) == 0) {
+      printf("[%s]\n", cmd);
+      break;
+    }
+    p = p->next;
+  }
+}
