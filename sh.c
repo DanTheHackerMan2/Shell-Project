@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
@@ -32,7 +31,9 @@ int sh( int argc, char **argv, char **envp )
   char* parse[2];
   int builtIn=0;//tells if it is a built in command
   int numBuiltIn=9;
-  const char a[2] = " "; //used for strtok in input
+  //int inc = 1;
+  //const char a[2] = " "; //used for strtok in input
+//  const char s[2] = "-";
   uid = getuid();
   password_entry = getpwuid(uid);               /* get passwd info */
   homedir = password_entry->pw_dir;             /* Home directory to start
@@ -65,49 +66,52 @@ while ( go ){
 /* check for each built in command and implement */
 // for running the while loop to seperate these values
 
+        const char a[2] = " ";
 	char *com1; //com1 takes first word, com1 will be set = to most commands such as which and where
 	char *com2;
 	char *com3;
 	char *com4;
-	int i = 1;	//used to keep track of what word is set to each variable
+	int inc = 1;	//used to keep track of what word is set to each variable
 	char *token; //keeps track odf each word
-//	fgets(input, 30, stdin);
-	scanf("%s", input);
+	fgets(input, 30, stdin);
+//	scanf("%s", input);
 	trimTrailing(input);
-	token = strtok(input, a);
+//	printf("trimmed input %s\n", input);
+	token = strtok(input, " ");
 	com1 = token;
-	while( token != NULL ) { //seperates string into seperate words
-	        i++;
-	        if(i==3){
+	while( inc <5 ) { //seperates string into seperate words
+//printf(" %s\n", token);
+	        inc++;
+	        if(inc==3){
 	                com2 = token;
 	        }
-	        if(i==4){
+	        if(inc==4){
 	                com3 = token;
 	        }
-	        if(i==5){
+	        if(inc==5){
 	                com4 = token;
 	        }
-      token = strtok(NULL, a);
+      token = strtok(NULL, " ");
    }
 
-	//printf("testing input %s %s %s %s\n", com1, com2, com3, com4);
+	printf("testing input %s %s %s %s\n", com1, com2, com3, com4);
 
-        if(strcmp(com1, "exit") == 0){
+        if((strcmp(com1, "exit") == 0)){
                 //exits
                 printf("exiting\n");
                 return 0;
         }
         if(strcmp(com1, "which") == 0){
                 //path = get_path();
-                printf("enter command to search\n");
-                scanf("%s", commandinput);
-                which(commandinput, get_path());
+               // printf("enter command to search\n");
+               // scanf("%s", commandinput);
+                which(com2, get_path());
         }
 	if(strcmp(com1, "where") == 0){
                 //path = get_path();
-                printf("enter command to search\n");
-                scanf("%s", commandinput);
-                where(commandinput, get_path());
+//                printf("enter command to search\n");
+  //              scanf("%s", commandinput);
+                where(com2, get_path());
         }
         }
         /*  else  program to exec */
@@ -220,4 +224,3 @@ void trimTrailing(char * str) //used for trimming white space off end of input
     /* Mark next character to last non-white space character as NULL */
     str[index + 1] = '\0';
 }
-
