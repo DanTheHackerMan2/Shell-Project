@@ -2,15 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-char input[10];
 
 int main(){
+char x[100];
 
-printf("enter a command\n");
-scanf("%s", input);
-while(strcmp(input, "exit") != 0){
-	printf("enter a command\n");
-	scanf("%s", input);
-	}
-printf("exiting\n");
+fgets(x,20,stdin);
+
+printf("%s\n", x);
 }

@@ -25,13 +25,14 @@ int sh( int argc, char **argv, char **envp )
   struct passwd *password_entry;
   char *homedir;
   struct pathelement *pathlist;
-  char input[10];
+  char input[30];
   char commandinput[20];
   char path;
   char* cmndDir[10];
   char* parse[2];
   int builtIn=0;//tells if it is a built in command
   int numBuiltIn=9;
+  const char a[2] = " "; //used for strtok in input
   uid = getuid();
   password_entry = getpwuid(uid);               /* get passwd info */
   homedir = password_entry->pw_dir;             /* Home directory to start
@@ -60,65 +61,49 @@ while ( go ){
         /* print your prompt */
         printf("enter a command\n");
         /* get command line and process */
-        scanf("%s", input);
+//        scanf("%s", input);
 /* check for each built in command and implement */
 // for running the while loop to seperate these values
-        
-        
-        int i=0;
-        int start=0;
-        int end;
-        int numOfWords=0;
-        while(i<strlen(input)){
-                if(numOfWords==0){
-                        while(input[i]!=' '){
-                                i++;
-                        }
-                        end=i;
-                        strcpy(parse[0],input[start:end]);
-                        printf("%s \n",parse[0]);
-                        numOfWords++;
-                }
-                while(input[i]==' '){
-                        i++;
-                }
-                if(numOfWords==1){
-                        start=i;
-                        end=strlen(input-1);
-                        strcpy(parse[1],input[start:end]);
-                        printf("%s\n",parse[1]);
-                }
-        }
-        i=0;
-        while(i<=numBuiltIn){
-                if(parse[0]==cmndDir[i]){
-                        builtIn=1;
-                }
-                else{
-                        i++;
-                }
-        }
 
+	char *com1; //com1 takes first word, com1 will be set = to most commands such as which and where
+	char *com2;
+	char *com3;
+	char *com4;
+	int i = 1;	//used to keep track of what word is set to each variable
+	char *token; //keeps track odf each word
+//	fgets(input, 30, stdin);
+	scanf("%s", input);
+	trimTrailing(input);
+	token = strtok(input, a);
+	com1 = token;
+	while( token != NULL ) { //seperates string into seperate words
+	i++;
+	if(i==3){
+	com2 = token;
+	}
+	if(i==4){
+	com3 = token;
+	}
+	if(i==5){
+	com4 = token;
+	}
+      token = strtok(NULL, a);
+   }
 
+	//printf("testing input %s %s %s %s\n", com1, com2, com3, com4);
 
-
-
-
-
-
-        if(builtIn==1){
-        if(strcmp(input, "exit") == 0){
+        if(strcmp(com1, "exit") == 0){
                 //exits
                 printf("exiting\n");
                 return 0;
         }
-        if(strcmp(input, "which") == 0){
+        if(strcmp(com1, "which") == 0){
                 //path = get_path();
                 printf("enter command to search\n");
                 scanf("%s", commandinput);
                 which(commandinput, get_path());
         }
-	if(strcmp(input, "where") == 0){
+	if(strcmp(com1, "where") == 0){
                 //path = get_path();
                 printf("enter command to search\n");
                 scanf("%s", commandinput);
@@ -133,8 +118,8 @@ while ( go ){
         /* else */
         /* fprintf(stderr, "%s: Command not found.\n", args[0]); */
         }
-}
-  return 0;
+	//}
+  	return 0;
 } /* sh() */
 
 char *which(char *command, struct pathelement *pathlist ){
@@ -205,10 +190,34 @@ token = strtok(NULL, s);
 } /* where()*/
 
 
+
 void list ( char *dir )
 {
   /* see man page for opendir() and readdir() and print out filenames for
   the directory passed */
 } /* list() */
 
+
+void trimTrailing(char * str) //used for trimming white space off end of input
+{
+    int index, i;
+
+    /* Set default index */
+    index = -1;
+
+    /* Find last index of non-white space character */
+    i = 0;
+    while(str[i] != '\0')
+    {
+        if(str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+        {
+            index= i;
+        }
+
+        i++;
+    }
+
+    /* Mark next character to last non-white space character as NULL */
+    str[index + 1] = '\0';
+}
 
