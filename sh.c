@@ -12,6 +12,9 @@
 #include <signal.h>
 #include "sh.h"
 
+struct wherepath *temp = NULL;
+struct wherepath *start = NULL;
+
 int sh( int argc, char **argv, char **envp )
 {
   char *prompt = calloc(PROMPTMAX, sizeof(char));
@@ -25,7 +28,6 @@ int sh( int argc, char **argv, char **envp )
   char input[10];
   char commandinput[20];
   char path;
-//  char catpath[100];
 
   uid = getuid();
   password_entry = getpwuid(uid);               /* get passwd info */
@@ -80,7 +82,6 @@ while ( go ){
 
 char *which(char *command, struct pathelement *pathlist ){
         int found = 0;
-	char catpath[100];
         printf("which function is running\n");
         /* loop through pathlist until finding command and return it.  Return
         NULL when not found. */
@@ -107,34 +108,45 @@ char *which(char *command, struct pathelement *pathlist ){
         printf("done which\n");
 } /* which() */
 
+
 char *where(char *command, struct pathelement *pathlist ){
-        int found = 0;
-        char catpath[100];
+	char allpaths[100] = "";
+	const char s[2] = "-";
         printf("where function is running\n");
         if(pathlist->element == NULL){
                 printf("empty pathlist\n");
                 return 0;
-        }
+        }//if
         while(pathlist->next != NULL){
                 printf("searching\n");
                 printf("%s\n", pathlist->element);
                 if(strcmp(pathlist->element, command) == 0){
-                        found = 1;
-                printf("found\n");
-                return pathlist->element;
-                }
-                else{
-                        pathlist = pathlist->next;
+                printf("found one\n");
+		strcat(allpaths, pathlist->element);
+		strcat(allpaths, "-");
+//		temp->whereelement = pathlist->element;
+//                temp = temp->next;
+		pathlist = pathlist->next;
+                }//if
+		else{
+			pathlist = pathlist->next;
 }
-        }
-        if(found == 0){
-                printf("command not found\n");
-                return NULL;
-        }
-        printf("done where\n");
 
-  /* similarly loop through finding all locations of command */
-} /* where() */
+        }//while
+	char *token;
+	printf("start printing\n");
+
+	token = strtok(allpaths, s);
+	while(token != NULL){
+printf("%s\n", token);
+token = strtok(NULL, s);
+}
+
+//	printf("%s\n", allpaths);
+        printf("done where\n");
+	return 0;
+} /* where()*/
+
 
 void list ( char *dir )
 {
