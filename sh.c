@@ -77,16 +77,16 @@ while ( go ){
 	token = strtok(input, a);
 	com1 = token;
 	while( token != NULL ) { //seperates string into seperate words
-	i++;
-	if(i==3){
-	com2 = token;
-	}
-	if(i==4){
-	com3 = token;
-	}
-	if(i==5){
-	com4 = token;
-	}
+	        i++;
+	        if(i==3){
+	                com2 = token;
+	        }
+	        if(i==4){
+	                com3 = token;
+	        }
+	        if(i==5){
+	                com4 = token;
+	        }
       token = strtok(NULL, a);
    }
 
@@ -131,12 +131,12 @@ char *which(char *command, struct pathelement *pathlist ){
                 printf("empty pathlist\n");
                 return 0;
         }
-        while(pathlist->next != NULL){
+        while(pathlist->next != NULL || found==1){
                 printf("searching\n");
-                printf("%s\n", pathlist->element);
                 if(strcmp(pathlist->element, command) == 0){
                         found = 1;
                 printf("found\n");
+                printf("Path:%s\n",pathlist->element);
                 return pathlist->element;
                 }
                 else{
