@@ -15,4 +15,5 @@ get_path.o: get_path.c get_path.h
 clean:
 	rm -f *.o mysh
 
-
+test: get_path_main.c get_path.c
+	$(CC) -g  -o test get_path_main.c get_path.c

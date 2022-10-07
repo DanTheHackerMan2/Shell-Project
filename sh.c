@@ -28,7 +28,10 @@ int sh( int argc, char **argv, char **envp )
   char input[10];
   char commandinput[20];
   char path;
-
+  char* cmndDir[10];
+  char* parse[2];
+  int builtIn=0;//tells if it is a built in command
+  int numBuiltIn=9;
   uid = getuid();
   password_entry = getpwuid(uid);               /* get passwd info */
   homedir = password_entry->pw_dir;             /* Home directory to start
@@ -44,13 +47,66 @@ if ( (pwd = getcwd(NULL, PATH_MAX+1)) == NULL )
 
   /* Put PATH into a linked list */
   pathlist = get_path();
-
+  cmndDir[1]="exit";
+  cmndDir[2]="which";
+  cmndDir[3]="where";
+  cmndDir[4]="cd";
+  cmndDir[5]="pwd";
+  cmndDir[6]="list";
+  cmndDir[7]="pid";
+  cmndDir[8]="kill";
+  cmndDir[9]="prompt";
 while ( go ){
         /* print your prompt */
         printf("enter a command\n");
         /* get command line and process */
         scanf("%s", input);
 /* check for each built in command and implement */
+// for running the while loop to seperate these values
+        
+        
+        int i=0;
+        int start=0;
+        int end;
+        int numOfWords=0;
+        while(i<strlen(input)){
+                if(numOfWords==0){
+                        while(input[i]!=' '){
+                                i++;
+                        }
+                        end=i;
+                        strcpy(parse[0],input[start:end]);
+                        printf("%s \n",parse[0]);
+                        numOfWords++;
+                }
+                while(input[i]==' '){
+                        i++;
+                }
+                if(numOfWords==1){
+                        start=i;
+                        end=strlen(input-1);
+                        strcpy(parse[1],input[start:end]);
+                        printf("%s\n",parse[1]);
+                }
+        }
+        i=0;
+        while(i<=numBuiltIn){
+                if(parse[0]==cmndDir[i]){
+                        builtIn=1;
+                }
+                else{
+                        i++;
+                }
+        }
+
+
+
+
+
+
+
+
+        if(builtIn==1){
         if(strcmp(input, "exit") == 0){
                 //exits
                 printf("exiting\n");
@@ -67,6 +123,7 @@ while ( go ){
                 printf("enter command to search\n");
                 scanf("%s", commandinput);
                 where(commandinput, get_path());
+        }
         }
         /*  else  program to exec */
         {
