@@ -27,7 +27,6 @@ int sh( int argc, char **argv, char **envp )
   char input[30];
   char commandinput[20];
   char path;
-  char* cmndDir[10];
   char* parse[2];
   int builtIn=0;//tells if it is a built in command
   int numBuiltIn=9;
@@ -49,15 +48,7 @@ if ( (pwd = getcwd(NULL, PATH_MAX+1)) == NULL )
 
   /* Put PATH into a linked list */
   pathlist = get_path();
-  cmndDir[1]="exit";
-  cmndDir[2]="which";
-  cmndDir[3]="where";
-  cmndDir[4]="cd";
-  cmndDir[5]="pwd";
-  cmndDir[6]="list";
-  cmndDir[7]="pid";
-  cmndDir[8]="kill";
-  cmndDir[9]="prompt";
+
 while ( go ){
         /* print your prompt */
         printf("enter a command\n");
@@ -113,16 +104,52 @@ while ( go ){
   //              scanf("%s", commandinput);
                 where(com2, get_path());
         }
+        if(strcmp(com1, "cd") == 0){
+                
         }
+        if(strcmp(com1, "pwd") == 0){
+                
+        }
+        if(strcmp(com1, "list") == 0){
+                
+        }
+        if(strcmp(com1, "pid") == 0){
+                
+        }
+        if(strcmp(com1, "kill") == 0){
+                
+        }
+        if(strcmp(com1, "prompt") == 0){
+                
+        }
+        if(strcmp(com1, "printenv") == 0){
+                
+        }
+        if(strcmp(com1, "setenv") == 0){
+                
+        }
+
         /*  else  program to exec */
         {
+        /*
+        pid=fork();
+                if(pid==0){
+                        execvc(fullpath,args, environment); Get environment from extern **char environ;
+                        exit(-1); idk if this works
+                }
+                else{//Parent
+                int status;// asked to print if non zero
+                        waitpid(pid,&status,0);
+                }    
+        */
         /* find it */
         /* do fork(), execve() and waitpid() */
 
         /* else */
-        /* fprintf(stderr, "%s: Command not found.\n", args[0]); */
+         fprintf(stderr, "%s: Command not found.\n", args[0]); 
         }
 	//}
+        }
   	return 0;
 } /* sh() */
 
@@ -147,6 +174,8 @@ char *which(char *command, struct pathelement *pathlist ){
                         pathlist = pathlist->next;
 }
         }
+        // remember that if there is a specific type of code entered, I belive /xyz, he wants us to try directly
+        //activating it to see if it works
         if(found == 0){
                 printf("command not found\n");
                 return NULL;
@@ -182,11 +211,11 @@ char *where(char *command, struct pathelement *pathlist ){
 	char *token;
 	printf("start printing\n");
 
-	token = strtok(allpaths, s);
+	token =strtok(allpaths, s);
 	while(token != NULL){
-printf("%s\n", token);
-token = strtok(NULL, s);
-}
+                printf("%s\n", token);
+                token = strtok(NULL, s);
+        }
 
 //	printf("%s\n", allpaths);
         printf("done where\n");
@@ -205,10 +234,8 @@ void list ( char *dir )
 void trimTrailing(char * str) //used for trimming white space off end of input
 {
     int index, i;
-
     /* Set default index */
     index = -1;
-
     /* Find last index of non-white space character */
     i = 0;
     while(str[i] != '\0')
@@ -217,10 +244,8 @@ void trimTrailing(char * str) //used for trimming white space off end of input
         {
             index= i;
         }
-
         i++;
     }
-
     /* Mark next character to last non-white space character as NULL */
     str[index + 1] = '\0';
 }
