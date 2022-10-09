@@ -57,7 +57,8 @@ getcwd(currentDir, sizeof(currentDir));
 
 while ( go ){
         /* print your prompt */
-        printf("%s %s:enter a command\n",prompt, currentDir);
+       // printf("%s %s: ",prompt, currentDir);
+	printpwdfunc(currentDir);
         /* get command line and process */
 //        scanf("%s", input);
 /* check for each built in command and implement */
@@ -250,7 +251,19 @@ char *where(char *command, struct pathelement *pathlist ){
 int pwdfunc(char* currentD) {
    char cwd[PATH_MAX];
    if (getcwd(cwd, sizeof(cwd)) != NULL) {
-       printf("Current working dir: %s\n", cwd);
+       printf("Current Directory is:  %s\n", cwd);
+   } //else {
+       //perror("getcwd() error");
+      // return 1;
+  // }
+   return 0;
+}
+
+
+int printpwdfunc(char* currentD) {
+   char cwd[PATH_MAX];
+   if (getcwd(cwd, sizeof(cwd)) != NULL) {
+       printf("  %s: ", cwd);
    } //else {
        //perror("getcwd() error");
       // return 1;
