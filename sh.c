@@ -30,15 +30,15 @@ int sh( int argc, char **argv, char **envp )
   char commandinput[20];
   char path;
   char* parse[2];
-  int builtIn=0;//tells if it is a built in command
-  int numBuiltIn=9;
+  char* prefix=calloc(PROMPTMAX, sizeof(char));
+  char* currentDir=calloc(PROMPTMAX, sizeof(char));
   //int inc = 1;
   //const char a[2] = " "; //used for strtok in input
 //  const char s[2] = "-";
   uid = getuid();
   password_entry = getpwuid(uid);               /* get passwd info */
   homedir = password_entry->pw_dir;             /* Home directory to start
-                                                  out with*/
+                                                 out with*/
 if ( (pwd = getcwd(NULL, PATH_MAX+1)) == NULL )
   {
     perror("getcwd");
@@ -51,9 +51,13 @@ if ( (pwd = getcwd(NULL, PATH_MAX+1)) == NULL )
   /* Put PATH into a linked list */
   pathlist = get_path();
 
+
+getcwd(currentDir, sizeof(currentDir));
+
+
 while ( go ){
         /* print your prompt */
-        printf("enter a command\n");
+        printf("%s %s:enter a command\n",prompt, currentDir);
         /* get command line and process */
 //        scanf("%s", input);
 /* check for each built in command and implement */
@@ -107,10 +111,17 @@ while ( go ){
                 where(com2, get_path());
         }
         else if(strcmp(com1, "cd") == 0){
-                
+              if(com2!=NULL){
+                chdir(com2);
+                pwdfunc(currentDir);
+              }
+              else if(com2==NULL){
+                chdir(homedir);
+                currentDir=homedir;
+              }
         }
         else if(strcmp(com1, "pwd") == 0){
-       pwdfunc();         
+                pwdfunc(currentDir);         
         }
         else if(strcmp(com1, "list") == 0){
                 
@@ -122,8 +133,16 @@ while ( go ){
                 
         }
         else if(strcmp(com1, "prompt") == 0){
-                
+                if(com2!=NULL){
+                        prefix=com2;
+                }
+                else{
+                        printf("input prompt prefix:");
+                        fgets(prefix, 30, stdin);
+                        
+                }
         }
+        
         else if(strcmp(com1, "printenv") == 0){
                 
         }
@@ -228,7 +247,7 @@ char *where(char *command, struct pathelement *pathlist ){
 } /* where()*/
 
 
-int pwdfunc() {
+int pwdfunc(char* currentD) {
    char cwd[PATH_MAX];
    if (getcwd(cwd, sizeof(cwd)) != NULL) {
        printf("Current working dir: %s\n", cwd);
