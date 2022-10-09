@@ -112,7 +112,8 @@ while ( go ){
                 where(com2, get_path());
         }
         else if(strcmp(com1, "cd") == 0){
-              if(com2!=NULL){
+              printf("cd is running\n");
+              if(com2!=NULL &com3==NULL){
                 chdir(com2);
                 pwdfunc(currentDir);
               }
@@ -120,6 +121,10 @@ while ( go ){
                 chdir(homedir);
                 currentDir=homedir;
               }
+              if(com3!=NULL){
+                printf("Too many arguments\n");
+              }
+
         }
         else if(strcmp(com1, "pwd") == 0){
                 pwdfunc(currentDir);         
