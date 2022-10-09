@@ -1,3 +1,5 @@
+//Co-Developers: Daniel Stahovich and Gavin Schrader
+
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>

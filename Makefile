@@ -1,3 +1,4 @@
+#Co-Developers: Daniel Stahovich and Gavin Schrader
 # choose your compiler
 CC=gcc
 #CC=gcc -Wall
