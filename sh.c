@@ -94,43 +94,45 @@ while ( go ){
                 printf("exiting\n");
                 return 0;
         }
-        if(strcmp(com1, "which") == 0){
-                //path = get_path();
+       else if(strcmp(com1, "which") == 0){
+               //path = get_path();
                // printf("enter command to search\n");
                // scanf("%s", commandinput);
                 which(com2, get_path());
         }
-	if(strcmp(com1, "where") == 0){
+	else if(strcmp(com1, "where") == 0){
                 //path = get_path();
 //                printf("enter command to search\n");
   //              scanf("%s", commandinput);
                 where(com2, get_path());
         }
-        if(strcmp(com1, "cd") == 0){
+        else if(strcmp(com1, "cd") == 0){
                 
         }
-        if(strcmp(com1, "pwd") == 0){
+        else if(strcmp(com1, "pwd") == 0){
+       pwdfunc();         
+        }
+        else if(strcmp(com1, "list") == 0){
                 
         }
-        if(strcmp(com1, "list") == 0){
+        else if(strcmp(com1, "pid") == 0){
                 
         }
-        if(strcmp(com1, "pid") == 0){
+        else if(strcmp(com1, "kill") == 0){
                 
         }
-        if(strcmp(com1, "kill") == 0){
+        else if(strcmp(com1, "prompt") == 0){
                 
         }
-        if(strcmp(com1, "prompt") == 0){
+        else if(strcmp(com1, "printenv") == 0){
                 
         }
-        if(strcmp(com1, "printenv") == 0){
+        else if(strcmp(com1, "setenv") == 0){
                 
         }
-        if(strcmp(com1, "setenv") == 0){
-                
+	else{
+         fprintf(stderr, "%s: Command not found.\n", args[0]); 
         }
-
         /*  else  program to exec */
         {
         /*
@@ -148,9 +150,10 @@ while ( go ){
         /* do fork(), execve() and waitpid() */
 
         /* else */
+/*	else{
          fprintf(stderr, "%s: Command not found.\n", args[0]); 
-        }
-	//}
+        }*/
+	}
         }
   	return 0;
 } /* sh() */
@@ -224,6 +227,17 @@ char *where(char *command, struct pathelement *pathlist ){
 	return 0;
 } /* where()*/
 
+
+int pwdfunc() {
+   char cwd[PATH_MAX];
+   if (getcwd(cwd, sizeof(cwd)) != NULL) {
+       printf("Current working dir: %s\n", cwd);
+   } //else {
+       //perror("getcwd() error");
+      // return 1;
+  // }
+   return 0;
+}
 
 
 void list ( char *dir )

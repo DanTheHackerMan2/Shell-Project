@@ -8,6 +8,7 @@ char *where(char *command, struct pathelement *pathlist);
 void list ( char *dir );
 void printenv(char **envp);
 void trimTrailing(char * str);
+int pwdfunc();
 
 #define PROMPTMAX 32
 #define MAXARGS 10
