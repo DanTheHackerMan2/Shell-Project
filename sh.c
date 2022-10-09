@@ -12,7 +12,7 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include "sh.h"
-
+#include "errno.h"
 struct wherepath *temp = NULL;
 struct wherepath *start = NULL;
 
@@ -125,10 +125,11 @@ while ( go ){
                 pwdfunc(currentDir);         
         }
         else if(strcmp(com1, "list") == 0){
-                
+                printf("List is printing\n");
+                list(currentDir);  
         }
         else if(strcmp(com1, "pid") == 0){
-                
+                printf("Printing Shell PID: %d\n", getpid());
         }
         else if(strcmp(com1, "kill") == 0){
                 
@@ -148,7 +149,7 @@ while ( go ){
                 
         }
         else if(strcmp(com1, "setenv") == 0){
-                
+
         }
 	else{
          fprintf(stderr, "%s: Command not found.\n", args[0]); 
@@ -274,8 +275,20 @@ int printpwdfunc(char* currentD) {
 
 void list ( char *dir )
 {
-  /* see man page for opendir() and readdir() and print out filenames for
-  the directory passed */
+  struct dirent *d;
+  DIR *direct = opendir(dir);
+  if(!direct){
+        if(errno=ENOENT){
+                perror("Directory doesn't exist");
+        }
+        else{
+                perror("Unable to read directory");
+        }
+        exit(EXIT_FAILURE);
+  }
+  while((d=readdir(direct))!=NULL){
+        printf("%s\n",d->d_name);
+  }
 } /* list() */
 
 
