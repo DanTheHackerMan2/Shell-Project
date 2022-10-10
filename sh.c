@@ -65,7 +65,7 @@ while ( go ){
 	char *com3;
 	char *com4;
 	int inc = 1;	//used to keep track of what word is set to each variable
-	char *token; //keeps track odf each word
+	char *token; //keeps track of each word
 	fgets(input, 30, stdin);
 	trim(input);
 	token = strtok(input, " ");
@@ -89,7 +89,6 @@ while ( go ){
         if((strcmp(com1, "exit") == 0)){
                 //exits
                 printf("exiting\n");
-//                free(currentDir);
                 free(prefix);
                 free(args);
                 free(prompt);
@@ -125,16 +124,12 @@ while ( go ){
                 pwdfunc(currentDir);
         }
         else if(strcmp(com1, "list") == 0){
-//                printf("List is printing\n");
                 list(currentDir);
         }
         else if(strcmp(com1, "pid") == 0){
                 printf("Printing Shell PID: %d\n", getpid());
         }
         else if(strcmp(com1, "kill") == 0){
-            //if(com2!=NULL){
-            //kill(com2, SIGKILL);
-            //}
             printf("Only Kills Current Process");
             kill(getpid(), SIGKILL);
 
@@ -194,10 +189,8 @@ char *which(char *command, struct pathelement *pathlist ){
                 return 0;
         }
         while(pathlist->next != NULL || found==1){
-         //       printf("searching\n");
                 if(strcmp(pathlist->element, command) == 0){
                         found = 1;
-      //          printf("found\n");
                 printf("Path:%s\n",pathlist->element);
                 return pathlist->element;
                 }
@@ -205,29 +198,23 @@ char *which(char *command, struct pathelement *pathlist ){
                         pathlist = pathlist->next;
 }
         }
-        // remember that if there is a specific type of code entered, I belive /xyz, he wants us to try directly
-        //activating it to see if it works
         if(found == 0){
                 printf("command not found\n");
                 return NULL;
         }
-    //    printf("done which\n");
 } /* which() */
 
 
 char *where(char *command, struct pathelement *pathlist ){
 	char allpaths[100] = "";
 	const char s[2] = "-";
-//        printf("where function is running\n");
         if(pathlist->element == NULL){
                 printf("empty pathlist\n");
                 return 0;
         }
         while(pathlist->next != NULL){
-  //              printf("searching\n");
                 printf("%s\n", pathlist->element);
                 if(strcmp(pathlist->element, command) == 0){
-//                printf("found one\n");
 		strcat(allpaths, pathlist->element);
 		strcat(allpaths, "-");
 		pathlist = pathlist->next;
@@ -236,16 +223,14 @@ char *where(char *command, struct pathelement *pathlist ){
 			pathlist = pathlist->next;
 }
 
-        }//while
+        }
 	char *token;
-//	printf("start printing\n");
 
 	token =strtok(allpaths, s);
 	while(token != NULL){
                 printf("Path: %s\n", token);
                 token = strtok(NULL, s);
         }
-  //      printf("done where\n");
 	return 0;
 } /* where()*/
 

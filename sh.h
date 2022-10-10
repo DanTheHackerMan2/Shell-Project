@@ -15,10 +15,3 @@ int printpwdfunc(char* currentD, char* pre);
 #define MAXARGS 10
 
 
-//struct wherepath
-//{
- // char *whereelement;                        /* a dir in the path */
- // struct wherepath *next;             /* pointer to next node */
- // struct wherepath *first;
-//};
-
