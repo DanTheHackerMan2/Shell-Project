@@ -58,7 +58,7 @@ getcwd(currentDir, sizeof(currentDir));
 while ( go ){
         /* print your prompt */
        // printf("%s %s: ",prompt, currentDir);
-	printpwdfunc(currentDir);
+	printpwdfunc(currentDir,prefix);
         /* get command line and process */
 //        scanf("%s", input);
 /* check for each built in command and implement */
@@ -146,6 +146,7 @@ while ( go ){
                 else{
                         printf("input prompt prefix:");
                         fgets(prefix, 30, stdin);
+                        com2=prefix;
                         
                 }
         }
@@ -266,11 +267,15 @@ int pwdfunc(char* currentD) {
 }
 
 
-int printpwdfunc(char* currentD) {
+int printpwdfunc(char* currentD, char* pre) {
    char cwd[PATH_MAX];
-   if (getcwd(cwd, sizeof(cwd)) != NULL) {
-       printf("  %s: ", cwd);
-   } //else {
+   if (getcwd(cwd, sizeof(cwd)) != NULL & pre!=NULL) {
+       printf("%s [%s]>> ", pre, cwd);
+   }
+   else{
+      printf("[%s]>> ", cwd);  
+   }
+    //else {
        //perror("getcwd() error");
       // return 1;
   // }

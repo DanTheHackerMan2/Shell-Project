@@ -9,7 +9,7 @@ void list ( char *dir );
 void printenv(char **envp);
 void trimTrailing(char * str);
 int pwdfunc();
-int printpwdfunc();
+int printpwdfunc(char* currentD, char* pre);
 
 #define PROMPTMAX 32
 #define MAXARGS 10
