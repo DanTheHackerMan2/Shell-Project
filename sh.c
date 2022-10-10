@@ -89,6 +89,13 @@ while ( go ){
         if((strcmp(com1, "exit") == 0)){
                 //exits
                 printf("exiting\n");
+                free(currentDir);
+                free(prefix);
+                free(args);
+                free(prompt);
+                free(commandline);
+                free(owd);
+
                 return 0;
         }
        else if(strcmp(com1, "which") == 0){
