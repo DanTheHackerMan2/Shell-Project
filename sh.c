@@ -84,17 +84,19 @@ while ( go ){
       token = strtok(NULL, " ");
    }
 
-	printf("testing input %s %s %s %s\n", com1, com2, com3, com4);
+//	printf("testing input %s %s %s %s\n", com1, com2, com3, com4);
 
         if((strcmp(com1, "exit") == 0)){
                 //exits
                 printf("exiting\n");
-                free(currentDir);
+//                free(currentDir);
                 free(prefix);
                 free(args);
                 free(prompt);
                 free(commandline);
                 free(owd);
+		free(temp);
+                free(start);
 
                 return 0;
         }
@@ -123,7 +125,7 @@ while ( go ){
                 pwdfunc(currentDir);
         }
         else if(strcmp(com1, "list") == 0){
-                printf("List is printing\n");
+//                printf("List is printing\n");
                 list(currentDir);
         }
         else if(strcmp(com1, "pid") == 0){
@@ -134,8 +136,8 @@ while ( go ){
             //kill(com2, SIGKILL);
             //}
             printf("Only Kills Current Process");
-            kill(getpid(), SIGKILL);  
-            
+            kill(getpid(), SIGKILL);
+
         }
         else if(strcmp(com1, "prompt") == 0){
                 if(com2!=NULL){
@@ -184,7 +186,7 @@ while ( go ){
 
 char *which(char *command, struct pathelement *pathlist ){
         int found = 0;
-        printf("which function is running\n");
+       // printf("which function is running\n");
         /* loop through pathlist until finding command and return it.  Return
         NULL when not found. */
         if(pathlist->element == NULL){
@@ -192,10 +194,10 @@ char *which(char *command, struct pathelement *pathlist ){
                 return 0;
         }
         while(pathlist->next != NULL || found==1){
-                printf("searching\n");
+         //       printf("searching\n");
                 if(strcmp(pathlist->element, command) == 0){
                         found = 1;
-                printf("found\n");
+      //          printf("found\n");
                 printf("Path:%s\n",pathlist->element);
                 return pathlist->element;
                 }
@@ -209,23 +211,23 @@ char *which(char *command, struct pathelement *pathlist ){
                 printf("command not found\n");
                 return NULL;
         }
-        printf("done which\n");
+    //    printf("done which\n");
 } /* which() */
 
 
 char *where(char *command, struct pathelement *pathlist ){
 	char allpaths[100] = "";
 	const char s[2] = "-";
-        printf("where function is running\n");
+//        printf("where function is running\n");
         if(pathlist->element == NULL){
                 printf("empty pathlist\n");
                 return 0;
         }
         while(pathlist->next != NULL){
-                printf("searching\n");
+  //              printf("searching\n");
                 printf("%s\n", pathlist->element);
                 if(strcmp(pathlist->element, command) == 0){
-                printf("found one\n");
+//                printf("found one\n");
 		strcat(allpaths, pathlist->element);
 		strcat(allpaths, "-");
 		pathlist = pathlist->next;
@@ -236,14 +238,14 @@ char *where(char *command, struct pathelement *pathlist ){
 
         }//while
 	char *token;
-	printf("start printing\n");
+//	printf("start printing\n");
 
 	token =strtok(allpaths, s);
 	while(token != NULL){
-                printf("%s\n", token);
+                printf("Path: %s\n", token);
                 token = strtok(NULL, s);
         }
-        printf("done where\n");
+  //      printf("done where\n");
 	return 0;
 } /* where()*/
 
@@ -279,6 +281,7 @@ void list(){
 		}
 	closedir(d);
 	}
+//free(dir);
 }
 
 
@@ -286,7 +289,7 @@ void trim(char * str){ //used for trimming white space off end of input
 	int index = -1;
 	int i = 0;
 	while(str[i] != '\0'){
-        	if(str[i] != ' ' && str[i] != '\t' && str[i] != '\n'){
+        	if(str[i] != ' ' && str[i] != '\n' && str[i] != '\t'){
 			index= i;
 		}
 		i++;
