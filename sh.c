@@ -123,7 +123,12 @@ while ( go ){
                 printf("Printing Shell PID: %d\n", getpid());
         }
         else if(strcmp(com1, "kill") == 0){
-
+            //if(com2!=NULL){
+            //kill(com2, SIGKILL);
+            //}
+            printf("Only Kills Current Process");
+            kill(getpid(), SIGKILL);  
+            
         }
         else if(strcmp(com1, "prompt") == 0){
                 if(com2!=NULL){
