@@ -5,9 +5,9 @@ extern int pid;
 int sh( int argc, char **argv, char **envp);
 char *which(char *command, struct pathelement *pathlist);
 char *where(char *command, struct pathelement *pathlist);
-void list ( char *dir );
+void list();
 void printenv(char **envp);
-void trimTrailing(char * str);
+void trim(char * str);
 int pwdfunc();
 int printpwdfunc(char* currentD, char* pre);
 

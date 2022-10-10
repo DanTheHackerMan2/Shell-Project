@@ -32,9 +32,6 @@ int sh( int argc, char **argv, char **envp )
   char* parse[2];
   char* prefix=calloc(PROMPTMAX, sizeof(char));
   char* currentDir=calloc(PROMPTMAX, sizeof(char));
-  //int inc = 1;
-  //const char a[2] = " "; //used for strtok in input
-//  const char s[2] = "-";
   uid = getuid();
   password_entry = getpwuid(uid);               /* get passwd info */
   homedir = password_entry->pw_dir;             /* Home directory to start
@@ -57,10 +54,8 @@ getcwd(currentDir, sizeof(currentDir));
 
 while ( go ){
         /* print your prompt */
-       // printf("%s %s: ",prompt, currentDir);
 	printpwdfunc(currentDir,prefix);
         /* get command line and process */
-//        scanf("%s", input);
 /* check for each built in command and implement */
 // for running the while loop to seperate these values
 
@@ -72,13 +67,10 @@ while ( go ){
 	int inc = 1;	//used to keep track of what word is set to each variable
 	char *token; //keeps track odf each word
 	fgets(input, 30, stdin);
-//	scanf("%s", input);
-	trimTrailing(input);
-//	printf("trimmed input %s\n", input);
+	trim(input);
 	token = strtok(input, " ");
 	com1 = token;
 	while( inc <5 ) { //seperates string into seperate words
-//printf(" %s\n", token);
 	        inc++;
 	        if(inc==3){
 	                com2 = token;
@@ -100,15 +92,9 @@ while ( go ){
                 return 0;
         }
        else if(strcmp(com1, "which") == 0){
-               //path = get_path();
-               // printf("enter command to search\n");
-               // scanf("%s", commandinput);
                 which(com2, get_path());
         }
 	else if(strcmp(com1, "where") == 0){
-                //path = get_path();
-//                printf("enter command to search\n");
-  //              scanf("%s", commandinput);
                 where(com2, get_path());
         }
         else if(strcmp(com1, "cd") == 0){
@@ -127,17 +113,17 @@ while ( go ){
 
         }
         else if(strcmp(com1, "pwd") == 0){
-                pwdfunc(currentDir);         
+                pwdfunc(currentDir);
         }
         else if(strcmp(com1, "list") == 0){
                 printf("List is printing\n");
-                list(currentDir);  
+                list(currentDir);
         }
         else if(strcmp(com1, "pid") == 0){
                 printf("Printing Shell PID: %d\n", getpid());
         }
         else if(strcmp(com1, "kill") == 0){
-                
+
         }
         else if(strcmp(com1, "prompt") == 0){
                 if(com2!=NULL){
@@ -147,18 +133,17 @@ while ( go ){
                         printf("input prompt prefix:");
                         fgets(prefix, 30, stdin);
                         com2=prefix;
-                        
+
                 }
         }
-        
+
         else if(strcmp(com1, "printenv") == 0){
-                
         }
         else if(strcmp(com1, "setenv") == 0){
 
         }
 	else{
-         fprintf(stderr, "%s: Command not found.\n", args[0]); 
+         fprintf(stderr, "%s: Command not found.\n", args[0]);
         }
         /*  else  program to exec */
         {
@@ -171,14 +156,14 @@ while ( go ){
                 else{//Parent
                 int status;// asked to print if non zero
                         waitpid(pid,&status,0);
-                }    
+                }
         */
         /* find it */
         /* do fork(), execve() and waitpid() */
 
         /* else */
 /*	else{
-         fprintf(stderr, "%s: Command not found.\n", args[0]); 
+         fprintf(stderr, "%s: Command not found.\n", args[0]);
         }*/
 	}
         }
@@ -223,7 +208,7 @@ char *where(char *command, struct pathelement *pathlist ){
         if(pathlist->element == NULL){
                 printf("empty pathlist\n");
                 return 0;
-        }//if
+        }
         while(pathlist->next != NULL){
                 printf("searching\n");
                 printf("%s\n", pathlist->element);
@@ -231,10 +216,8 @@ char *where(char *command, struct pathelement *pathlist ){
                 printf("found one\n");
 		strcat(allpaths, pathlist->element);
 		strcat(allpaths, "-");
-//		temp->whereelement = pathlist->element;
-//                temp = temp->next;
 		pathlist = pathlist->next;
-                }//if
+                }
 		else{
 			pathlist = pathlist->next;
 }
@@ -248,75 +231,53 @@ char *where(char *command, struct pathelement *pathlist ){
                 printf("%s\n", token);
                 token = strtok(NULL, s);
         }
-
-//	printf("%s\n", allpaths);
         printf("done where\n");
 	return 0;
 } /* where()*/
 
 
-int pwdfunc(char* currentD) {
-   char cwd[PATH_MAX];
-   if (getcwd(cwd, sizeof(cwd)) != NULL) {
-       printf("Current Directory is:  %s\n", cwd);
-   } //else {
-       //perror("getcwd() error");
-      // return 1;
-  // }
-   return 0;
+int pwdfunc(char* currentD){
+	char cwd[PATH_MAX];
+	if(getcwd(cwd, sizeof(cwd)) != NULL) {
+		printf("Current Directory is:  %s\n", cwd);
+	}
+	return 0;
 }
 
 
-int printpwdfunc(char* currentD, char* pre) {
-   char cwd[PATH_MAX];
-   if (getcwd(cwd, sizeof(cwd)) != NULL & pre!=NULL) {
-       printf("%s [%s]>> ", pre, cwd);
-   }
-   else{
-      printf("[%s]>> ", cwd);  
-   }
-    //else {
-       //perror("getcwd() error");
-      // return 1;
-  // }
-   return 0;
+int printpwdfunc(char* currentD, char* pre){
+	char cwd[PATH_MAX];
+	if(getcwd(cwd, sizeof(cwd)) != NULL & pre!=NULL) {
+        	printf("%s [%s]>> ", pre, cwd);
+	}
+	else{
+		printf("[%s]>> ", cwd);
+	}
+	return 0;
 }
 
 
-void list ( char *dir )
-{
-  struct dirent *d;
-  DIR *direct = opendir(dir);
-  if(!direct){
-        if(errno=ENOENT){
-                perror("Directory doesn't exist");
-        }
-        else{
-                perror("Unable to read directory");
-        }
-        exit(EXIT_FAILURE);
-  }
-  while((d=readdir(direct))!=NULL){
-        printf("%s\n",d->d_name);
-  }
-} /* list() */
+void list(){
+	DIR *d;
+	d = opendir(".");
+	struct dirent *dir;
+	if(d){
+		while ((dir = readdir(d)) != NULL){
+		printf("%s\n", dir->d_name);
+		}
+	closedir(d);
+	}
+}
 
 
-void trimTrailing(char * str) //used for trimming white space off end of input
-{
-    int index, i;
-    /* Set default index */
-    index = -1;
-    /* Find last index of non-white space character */
-    i = 0;
-    while(str[i] != '\0')
-    {
-        if(str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
-        {
-            index= i;
-        }
-        i++;
-    }
-    /* Mark next character to last non-white space character as NULL */
-    str[index + 1] = '\0';
+void trim(char * str){ //used for trimming white space off end of input
+	int index = -1;
+	int i = 0;
+	while(str[i] != '\0'){
+        	if(str[i] != ' ' && str[i] != '\t' && str[i] != '\n'){
+			index= i;
+		}
+		i++;
+	}
+	str[index + 1] = '\0';
 }
